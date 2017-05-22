@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{{template "head.html" .}}
+<script type="text/javascript" src="/js/plugins/jquery.smartWizard-2.0.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.colorbox-min.js"></script>
+
+<script type="text/javascript" src="/js/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.tagsinput.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.alerts.js"></script>
+<script type="text/javascript" src="/js/plugins/charCount.js"></script>
+<script type="text/javascript" src="/js/plugins/ui.spinner.min.js"></script>
+<script type="text/javascript" src="/js/plugins/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="/js/custom/projectedit.js"></script>
+</head>
+
+<body class="withvernav">
+<div class="bodywrapper">
+    {{template "topheader.html" .}} 
+    {{template "header.html" .}} 
+    {{template "leftmenu.html" .}} 
+    <div class="centercontent">
+    
+        <div class="pageheader notab">
+            <h1 class="pagetitle">{{.Data.title}}</h1>
+            <span class="pagedesc">{{.Data.title}}</span>
+        </div><!--pageheader-->
+        
+        <div id="contentwrapper" class="contentwrapper">
+
+            <!-- START OF VERTICAL WIZARD -->
+            <form id="form1" class="stdform" method="post" action="">
+                <div class="notibar msgerror" style="display:none">
+                    <a class="close"></a>
+                    <p></p>
+                </div>
+
+                {{if eq .Action "edit"}}
+                <input type="hidden" name="Id" id="Id" value="{{.Data.projectes.Id}}" />
+                {{end}}
+                <div id="wizard" class="wizard verwizard">
+
+                    <ul class="verticalmenu">
+                        <li>
+                            <a href="#wiz1step3_1">
+                                <span class="label">Step 1：基本设置</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#wiz1step3_2">
+                                <span class="label">Step 2：开发环境设置</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#wiz1step3_3">
+                                <span class="label">Step 3：测试环境设置</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#wiz1step3_4">
+                                <span class="label">Step 4：生产环境设置</span>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <div id="wiz1step3_1" class="formwiz">
+                        <h4>Step 1：基本设置</h4> 
+
+                        <p>
+                        <label>项目名称</label>
+                        {{if eq .Action "edit"}}
+                        <span class="field">{{.Data.projectes.Name}}</span>
+                        {{else}}
+                        <span class="field"><input type="text" name="Name" id="Name" class="longinput" value="{{.Data.projectes.Name}}" placeholder="项目名称，辨识度要高" /></span>
+                        {{end}}
+                        </p>
+
+                        <p>
+                        <label>GIT地址</label>
+                        <span class="field"><input type="text" name="Git" id="Git" class="longinput" value="{{.Data.projectes.Git}}" placeholder="代码的git地址" /></span>
+                        </p>
+
+                        <p>
+                        <label>默认GIT代码检出目录</label>
+                        <span class="field"><input type="text" name="Wwwroot" id="Wwwroot" class="longinput" value="{{.Data.projectes.Wwwroot}}"
+                            placeholder="代码的最终部署路径，可以被各环境设置覆盖，注意，如果修改此参数，将重新创建test和develop分支，影响已经测试通过但未上线的任务" /></span>
+                        </p>
+
+                    </div><!--wiz1step3_1-->
+
+                    <div id="wiz1step3_2" class="formwiz">
+                        <h4>Step 2：开发环境设置</h4> 
+
+                        <p>
+                        	<label>选择开发服务器</label>
+                            <span id="dualselect1" class="dualselect field">
+                            	<select class="uniformselect" name="devMachineIds" multiple="multiple" size="10">
+                                    {{range $k,$v := .Data.projectes.DevMachines}}
+                                    <option value="{{$v.Id}}">{{$v.Name}}</option>
+                                    {{end}}
+                                </select>
+                                <span class="ds_arrow">
+                                	<span class="arrow ds_prev">&laquo;</span>
+                                    <span class="arrow ds_next">&raquo;</span>
+                                </span>
+                                <select name="select1" multiple="multiple" size="10">
+                                    {{range $key,$val := .Data.devMachines}}
+                                    {{if not (InArray $val.Id $.Data.projectes.DevMachines)}}
+                                    <option value="{{$val.Id}}">{{$val.Name}}</option>
+                                    {{end}}
+                                    {{end}}
+                                </select>
+                            </span>
+                        </p>
+
+                        <p>
+                        <label>GIT代码检出目录</label>
+                        <span class="field"><input type="text" name="DevWwwroot" id="DevWwwroot" class="longinput" value="{{.Data.projectes.DevWwwroot}}" placeholder="代码的最终部署路径" /></span>
+                        </p>
+
+                        <p>
+                        <label>发布后执行</label>
+                        <span class="field"><textarea cols="80" name="DevAfterRelease" rows="5" class="longinput"
+                                placeholder="git代码发布之后，可能做一些调整处理，如环境适配，服务重启，清理缓存等，一行一条">{{.Data.projectes.DevAfterRelease}}</textarea></span> 
+                        </p>
+
+                    </div><!--wiz1step3_2-->
+
+                    <div id="wiz1step3_3">
+                        <h4>Step 3：测试环境设置</h4>
+
+                        <p>
+                        	<label>选择测试服务器</label>
+                            <span id="dualselect2" class="dualselect field">
+                            	<select class="uniformselect" name="testMachineIds" multiple="multiple" size="10">
+                                    {{range $k,$v := .Data.projectes.TestMachines}}
+                                    <option value="{{$v.Id}}">{{$v.Name}}</option>
+                                    {{end}}
+                                </select>
+                                <span class="ds_arrow">
+                                	<span class="arrow ds_prev">&laquo;</span>
+                                    <span class="arrow ds_next">&raquo;</span>
+                                </span>
+                                <select name="select2" multiple="multiple" size="10">
+                                    {{range $key,$val := .Data.testMachines}}
+                                    {{if not (InArray $val.Id $.Data.projectes.TestMachines)}}
+                                    <option value="{{$val.Id}}">{{$val.Name}}</option>
+                                    {{end}}
+                                    {{end}}
+                                </select>
+                            </span>
+                        </p>
+
+                        <p>
+                        <label>GIT代码检出目录</label>
+                        <span class="field"><input type="text" name="TestWwwroot" id="TestWwwroot" class="longinput" value="{{.Data.projectes.TestWwwroot}}" placeholder="代码的最终部署路径" /></span>
+                        </p>
+
+                        <p>
+                        <label>发布后执行</label>
+                        <span class="field"><textarea cols="80" name="TestAfterRelease" rows="5" class="longinput"
+                                placeholder="git代码发布之后，可能做一些调整处理，如环境适配，服务重启，清理缓存等，一行一条">{{.Data.projectes.TestAfterRelease}}</textarea></span> 
+                        </p>
+
+                    </div><!--wiz1step3_3-->
+
+                    <div id="wiz1step3_4">
+                        <h4>Step 4：生产环境设置</h4>
+
+                        <p>
+                        	<label>选择生产服务器</label>
+                            <span id="dualselect3" class="dualselect field">
+                            	<select class="uniformselect" name="prodMachineIds" multiple="multiple" size="10">
+                                    {{range $k,$v := .Data.projectes.ProdMachines}}
+                                    <option value="{{$v.Id}}">{{$v.Name}}</option>
+                                    {{end}}
+                                </select>
+                                <span class="ds_arrow">
+                                	<span class="arrow ds_prev">&laquo;</span>
+                                    <span class="arrow ds_next">&raquo;</span>
+                                </span>
+                                <select name="select3" multiple="multiple" size="10">
+                                    {{range $key,$val := .Data.prodMachines}}
+                                    {{if not (InArray $val.Id $.Data.projectes.ProdMachines)}}
+                                    <option value="{{$val.Id}}">{{$val.Name}}</option>
+                                    {{end}}
+                                    {{end}}
+                                </select>
+                            </span>
+                        </p>
+
+                        <p>
+                        <label>GIT代码检出目录</label>
+                        <span class="field"><input type="text" name="ProdWwwroot" id="ProdWwwroot" class="longinput" value="{{.Data.projectes.ProdWwwroot}}" placeholder="代码的最终部署路径" /></span>
+                        </p>
+
+                        <p>
+                        <label>发布后执行</label>
+                        <span class="field"><textarea cols="80" name="ProdAfterRelease" rows="5" class="longinput"
+                                placeholder="git代码发布之后，可能做一些调整处理，如环境适配，服务重启，清理缓存等，一行一条">{{.Data.projectes.ProdAfterRelease}}</textarea></span> 
+                        </p>
+
+                    </div><!--wiz1step3_4-->
+
+                </div><!--wizard-->
+            </form>
+
+            <br clear="all" /><br />
+
+            <!-- END OF VERTICAL WIZARD -->
+                    
+        </div><!--contentwrapper-->
+        
+	</div><!-- centercontent -->
+    
+</div><!--bodywrapper-->
+
+</body>
+</html>

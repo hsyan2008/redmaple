@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{{template "head.html" .}}
+<script type="text/javascript" src="/js/plugins/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.alerts.js"></script>
+<script type="text/javascript" src="/js/custom/tasklist.js"></script>
+</head>
+
+<body class="withvernav">
+<div class="bodywrapper">
+    {{template "topheader.html" .}} 
+    {{template "header.html" .}} 
+    {{template "leftmenu.html" .}} 
+    <div class="centercontent tables">
+    
+        <div class="pageheader notab">
+            <h1 class="pagetitle">{{.Data.title}}</h1>
+            <span class="pagedesc">{{.Data.title}}</span>
+        </div><!--pageheader-->
+        
+        <div id="contentwrapper" class="contentwrapper">
+
+            <div class="contenttitle2 nomargintop">
+                <h3>任务概览</h3>
+            </div><!--contenttitle-->
+                        
+            <table cellpadding="0" cellspacing="0" border="0" id="table2" class="stdtable stdtablecb">
+                <colgroup>
+                    <col class="con0" />
+                    <col class="con1" />
+                    <col class="con0" />
+                    <col class="con1" />
+                    <col class="con0" />
+                    <col class="con1" />
+                    <col class="con0" />
+                    <col class="con1" />
+                    <col class="con0" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="head0">ID</th>
+                        <th class="head1">开发人员</th>
+                        <th class="head0">任务名</th>
+                        <th class="head1">Review负责人</th>
+                        <th class="head0">当前Review人员</th>
+                        <th class="head1">测试人员</th>
+                        <th class="head0">开发项目</th>
+                        <th class="head1">任务描述</th>
+                        <th class="head0">状态</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{.Data.task.Id}}</td>
+                        <td>{{.Data.task.User.Realname}}</td>
+                        <td>{{.Data.task.Name}}</td>
+                        <td>
+                            {{range $key, $val := .Data.task.TaskReviews}}
+                            {{$val.User.Realname}}&nbsp;<br />
+                            {{end}}
+                        </td>
+                        <td>
+                            {{if gt .Data.task.ReviewUserId 0}}
+                            {{.Data.task.ReviewUser.Realname}}
+                            {{end}}
+                        </td>
+                        <td>
+                            {{if gt .Data.task.TestUserId 0}}
+                            {{.Data.task.TestUser.Realname}}
+                            {{end}}
+                        </td>
+                        <td>
+                            {{range $key, $val := .Data.task.TaskProjectes}}
+                            {{$val.Project.Name}}&nbsp;{{$val.Project.Git}}&nbsp;S:{{$val.StartCommit}}&nbsp;E:{{$val.EndCommit}}<br />
+                            {{end}}
+                        </td>
+                        <td class="center">{{.Data.task.Comment}}</td>
+                        <td class="center">{{index $.Data.taskStatus .Data.task.Status}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <br clear="all" />
+
+            <div class="contenttitle2 nomargintop">
+                <h3>任务进程</h3>
+            </div><!--contenttitle-->
+                        
+            <table cellpadding="0" cellspacing="0" border="0" id="table2" class="stdtable stdtablecb">
+                <colgroup>
+                    <col class="con1" />
+                    <col class="con0" />
+                    <col class="con1" />
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th class="head1">操作人</th>
+                        <th class="head0">消息</th>
+                        <th class="head1">时间</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{range $k,$v := .Data.messages}}
+                    <tr>
+                        <td>{{$v.User.Realname}}</td>
+                        <td class="center">{{$v.Msg}}</td>
+                        <td class="center">{{$v.UpdatedAt}}</td>
+                    </tr>
+                    {{end}}
+                </tbody>
+            </table>
+
+        </div><!--contentwrapper-->
+
+	</div><!-- centercontent -->
+    
+</div><!--bodywrapper-->
+
+</body>
+</html>

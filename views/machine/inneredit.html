@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{{template "head.html" .}}
+<script type="text/javascript" src="/js/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.tagsinput.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.alerts.js"></script>
+<script type="text/javascript" src="/js/plugins/charCount.js"></script>
+<script type="text/javascript" src="/js/plugins/ui.spinner.min.js"></script>
+<script type="text/javascript" src="/js/plugins/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="/js/custom/machineeditforms.js"></script>
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+    {{template "topheader.html" .}} 
+    {{template "header.html" .}} 
+    {{template "leftmenu.html" .}} 
+    <div class="centercontent">
+    
+        <div class="pageheader notab">
+            <h1 class="pagetitle">{{.Data.title}}</h1>
+            <span class="pagedesc">{{.Data.title}}</span>
+        </div><!--pageheader-->
+        
+        <div id="contentwrapper" class="contentwrapper">
+        	
+            <div id="validation" class="subcontent">
+            	
+                    <form id="form1" class="stdform stdform2" method="post" action="">
+                        {{if eq .Action "edit"}}
+                        <input type="hidden" name="Id" id="Id" value="{{.Data.machine.Id}}" />
+                        {{end}}
+                    	<p>
+                        	<label>名称</label>
+                            <span class="field"><input type="text" name="Name" id="Name" class="longinput" value="{{.Data.machine.Name}}" placeholder="给服务器取个名字，方便辨认" /></span>
+                        </p>
+
+                        <p>
+                        	<label>环境</label>
+                            <span class="formwrapper field">
+                            	<select data-placeholder="选择一个环境..." class="chzn-select" style="width:350px;" tabindex="2" name="Env" id="Env" required>
+                                  <option value=""></option> 
+                                  {{range $k,$v := .Data.envs}}
+                                  <option value="{{$k}}"{{if eq $.Data.machine.Env $k}} selected{{end}}>{{$v}}</option> 
+                                  {{end}}
+                                </select>
+                            </span>
+                        </p>
+
+                    	<p>
+                        	<label>IP地址</label>
+                            <span class="field"><input type="text" name="Ip" id="Ip" class="longinput" value="{{.Data.machine.Ip}}" placeholder="请输入服务器IP地址" /></span>
+                        </p>
+                        
+                        <p>
+                        	<label>端口号</label>
+                            <span class="field"><input type="text" name="Port" id="Port" class="longinput" value="{{.Data.machine.Port}}" placeholder="请输入端口号" /></span>
+                        </p>
+
+                        <p>
+                        	<label>服务器登陆名</label>
+                            <span class="field"><input type="text" name="User" id="User" class="longinput" value="{{.Data.machine.User}}" placeholder="请输入服务器登陆名，必须可以登陆并且有权限操作git" /></span>
+                        </p>
+                        
+                        <p>
+                        	<label>认证信息</label>
+                            <span class="field"><textarea cols="80" name="Auth" rows="5" class="longinput" placeholder="请输入认证信息，可以是密码、密钥文件或密钥文本，文件必须可读，否则输入内容短于50认为是密码，否则认为是密钥文本">{{.Data.machine.Auth}}</textarea></span> 
+                        </p>
+
+                    	<p>
+                        	<label>内网IP地址</label>
+                            <span class="field"><input type="text" name="InnerIp" id="InnerIp" class="longinput" value="{{.Data.machine.InnerIp}}" placeholder="请输入内网服务器IP地址" /></span>
+                        </p>
+                        
+                        <p>
+                        	<label>内网端口号</label>
+                            <span class="field"><input type="text" name="InnerPort" id="InnerPort" class="longinput" value="{{.Data.machine.InnerPort}}" placeholder="请输入内网端口号" /></span>
+                        </p>
+
+                        <p>
+                        	<label>内网服务器登陆名</label>
+                            <span class="field"><input type="text" name="InnerUser" id="InnerUser" class="longinput" value="{{.Data.machine.InnerUser}}" placeholder="请输入内网服务器登陆名，必须可以登陆并且有权限操作git" /></span>
+                        </p>
+                        
+                        <p>
+                        	<label>内网认证信息</label>
+                            <span class="field"><textarea cols="80" name="InnerAuth" rows="5" class="longinput" placeholder="请输入认证信息，可以是密码、密钥文件或密钥文本，文件必须可读，否则输入内容短于50认为是密码，否则认为是密钥文本">{{.Data.machine.InnerAuth}}</textarea></span> 
+                        </p>
+
+                        <p class="stdformbutton">
+                        	<button class="submit radius2">Submit</button>
+                            <input type="reset" class="reset radius2" value="Reset" />
+                        </p>
+                    </form>
+
+            </div><!--subcontent-->
+        
+        </div><!--contentwrapper-->
+        
+	</div><!-- centercontent -->
+    
+    
+</div><!--bodywrapper-->
+
+</body>
+</html>
+

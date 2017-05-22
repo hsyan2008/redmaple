@@ -1,0 +1,91 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{{template "head.html" .}}
+<script type="text/javascript" src="/js/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.tagsinput.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.alerts.js"></script>
+<script type="text/javascript" src="/js/plugins/charCount.js"></script>
+<script type="text/javascript" src="/js/plugins/ui.spinner.min.js"></script>
+<script type="text/javascript" src="/js/plugins/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="/js/custom/taskeditforms.js"></script>
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+    {{template "topheader.html" .}} 
+    {{template "header.html" .}} 
+    {{template "leftmenu.html" .}} 
+    <div class="centercontent">
+    
+        <div class="pageheader notab">
+            <h1 class="pagetitle">{{.Data.title}}</h1>
+            <span class="pagedesc">{{.Data.title}}，注意一旦创建就不能修改</span>
+        </div><!--pageheader-->
+        
+        <div id="contentwrapper" class="contentwrapper">
+        	
+            <div id="validation" class="subcontent">
+            	
+                    <form id="form1" class="stdform stdform2" method="post" action="">
+
+                    	<p>
+                        	<label>任务名</label>
+                            <span class="field"><input type="text" name="Name" id="Name" class="longinput" value="{{.Data.task.Name}}" placeholder="一个识别度高的任务名，方便其他同事了解" /></span>
+                        </p>
+
+                        <p>
+                        	<label>选择Review负责人</label>
+                            <span class="formwrapper field">
+                            	<select data-placeholder="选择一个Review负责人..." class="chzn-select" style="width:350px;" tabindex="2" name="ReviewUserId" id="ReviewUserId" required>
+                                  <option value=""></option> 
+                                  {{range $k,$v := .Data.users}}
+                                  {{if ne $v.Id $.Data.user_id}}
+                                  <option value="{{$v.Id}}">{{$v.Realname}}</option>
+                                  {{end}}
+                                  {{end}}
+                                </select>
+                            </span>
+                        </p>
+                        
+                        <p>
+                        	<label>选择开发分支</label>
+                            <span id="dualselect" class="dualselect field">
+                            	<select class="uniformselect" name="projectIds" multiple="multiple" size="10">
+                                </select>
+                                <span class="ds_arrow">
+                                	<span class="arrow ds_prev">&laquo;</span>
+                                    <span class="arrow ds_next">&raquo;</span>
+                                </span>
+                                <select name="select4" multiple="multiple" size="10">
+                                    {{range $k,$v := .Data.projectes}}
+                                    <option value="{{$v.Id}}">{{$v.Name}}({{$v.Git}})</option>
+                                    {{end}}
+                                </select>
+                            </span>
+                        </p>
+
+                        <p>
+                        	<label>开发内容</label>
+                            <span class="field"><textarea cols="80" name="Comment" rows="5" class="longinput" placeholder="将以此内容作为合并到master上的提交信息，请不要输入特殊字符">{{.Data.task.Comment}}</textarea></span> 
+                        </p>
+
+                        <p class="stdformbutton">
+                        	<button class="submit radius2">Submit</button>
+                            <input type="reset" class="reset radius2" value="Reset" />
+                        </p>
+                    </form>
+
+            </div><!--subcontent-->
+        
+        </div><!--contentwrapper-->
+        
+	</div><!-- centercontent -->
+    
+    
+</div><!--bodywrapper-->
+
+</body>
+</html>
+

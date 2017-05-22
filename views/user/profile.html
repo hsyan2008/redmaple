@@ -1,0 +1,80 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{{template "head.html" .}}
+<script type="text/javascript" src="/js/plugins/jquery.validate.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.tagsinput.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.alerts.js"></script>
+<script type="text/javascript" src="/js/plugins/charCount.js"></script>
+<script type="text/javascript" src="/js/plugins/ui.spinner.min.js"></script>
+<script type="text/javascript" src="/js/plugins/chosen.jquery.min.js"></script>
+<script type="text/javascript" src="/js/custom/userprofile.js"></script>
+</head>
+
+<body class="withvernav">
+
+<div class="bodywrapper">
+    {{template "topheader.html" .}} 
+    {{template "header.html" .}} 
+    {{template "leftmenu.html" .}} 
+    <div class="centercontent">
+    
+        <div class="pageheader notab">
+            <h1 class="pagetitle">{{.Data.title}}</h1>
+            <span class="pagedesc">{{.Data.title}}</span>
+        </div><!--pageheader-->
+        
+        <div id="contentwrapper" class="contentwrapper">
+        	
+            <div id="validation" class="subcontent">
+            	
+                    <form id="form1" class="stdform" method="post" action="">
+                    	<p>
+                        	<label>用户名</label>
+                            <span class="field">{{.Data.user.Name}}</span>
+                        </p>
+
+                    	<p>
+                        	<label>真实名</label>
+                            <span class="field"><input type="text" name="realname" id="realname" class="longinput" value="{{.Data.user.Realname}}" placeholder="请输入真实姓名，方便其他同事知道" /></span>
+                        </p>
+                        
+                        <p>
+                        	<label>原密码</label>
+                            <span class="field"><input type="password" name="oldpassword" id="oldpassword" class="longinput" placeholder="如果修改密码，请输入原密码" /></span>
+                        </p>
+
+                        <p>
+                        	<label>密码</label>
+                            <span class="field"><input type="password" name="password" id="password" class="longinput" placeholder="只有输入此内容，才认为是修改密码" /></span>
+                        </p>
+
+                        <p>
+                        	<label>重复密码</label>
+                            <span class="field"><input type="password" name="repassword" id="repassword" class="longinput" placeholder="重复输入一次密码" /></span>
+                        </p>
+                        
+                        <p>
+                        	<label>Email</label>
+                            <span class="field"><input type="text" name="email" id="email" class="longinput" value="{{.Data.user.Email}}" placeholder="输入最常用的邮箱地址" /></span>
+                        </p>
+
+                        <br />
+                        
+                        <p class="stdformbutton">
+                        	<button class="submit radius2">Submit Button</button>
+                        </p>
+                    </form>
+
+            </div><!--subcontent-->
+        
+        </div><!--contentwrapper-->
+        
+	</div><!-- centercontent -->
+    
+    
+</div><!--bodywrapper-->
+
+</body>
+</html>
+

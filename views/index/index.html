@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+{{template "head.html" .}}
+<script type="text/javascript" src="/js/plugins/jquery.flot.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.flot.resize.min.js"></script>
+<script type="text/javascript" src="/js/plugins/jquery.slimscroll.js"></script>
+<script type="text/javascript" src="/js/custom/dashboard.js"></script>
+</head>
+
+<body class="withvernav">
+<div class="bodywrapper">
+    {{template "topheader.html" .}} 
+    {{template "header.html" .}} 
+    {{template "leftmenu.html" .}} 
+    <div class="centercontent">
+    
+        <div class="pageheader notab">
+            <h1 class="pagetitle">{{.Data.title}}</h1>
+            <span class="pagedesc">{{.Data.title}}</span>
+        </div><!--pageheader-->
+        
+        <div id="contentwrapper" class="contentwrapper">
+        
+        	<div id="updates" class="subcontent">
+                    <div class="two_third dashboard_left">
+                    
+                        <div class="contenttitle2 nomargintop">
+                            <h3>最新消息</h3>
+                        </div><!--contenttitle-->
+                        
+                        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablecb overviewtable2">
+                            <colgroup>
+                                <col class="con0" />
+                                <col class="con1" />
+                                <col class="con0" />
+                                <col class="con1" />
+                                <col class="con0" />
+                                <col class="con1" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th class="head0">ID</th>
+                                    <th class="head1">开发人员</th>
+                                    <th class="head0">操作人员</th>
+                                    <th class="head1">任务名称</th>
+                                    <th class="head0">消息</th>
+                                    <th class="head1">时间</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range $key,$val := .Data.messages}}
+                                <tr>
+                                    <td>{{$val.Id}}</td>
+                                    <td>{{$val.Task.User.Realname}}</td>
+                                    <td>{{$val.User.Realname}}</td>
+                                    <td>{{$val.Task.Name}}</td>
+                                    <td>{{$val.Msg}}</td>
+                                    <td>{{$val.UpdatedAt}}</td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                        
+                        <br clear="all" />
+
+                        <div class="contenttitle2 nomargintop">
+                            <h3>任务进展</h3>
+                        </div><!--contenttitle-->
+                        
+                        <table cellpadding="0" cellspacing="0" border="0" class="stdtable stdtablecb overviewtable2">
+                            <colgroup>
+                                <col class="con0"/>
+                                <col class="con1" />
+                                <col class="con0" />
+                                <col class="con1" />
+                                <col class="con0" />
+                                <col class="con1" />
+                                <col class="con0" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th class="head0">ID</th>
+                                    <th class="head1">任务名称</th>
+                                    <th class="head0">开发人员</th>
+                                    <th class="head1">创建时间</th>
+                                    <th class="head0">更新时间</th>
+                                    <th class="head1">状态</th>
+                                    <th class="head0">进度</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{range $k,$v := .Data.tasks}}
+                                <tr>
+                                    <td>{{$v.Id}}</td>
+                                    <td>{{$v.Name}}</td>
+                                    <td>{{$v.User.Realname}}</td>
+                                    <td>{{$v.CreatedAt}}</td>
+                                    <td>{{$v.UpdatedAt}}</td>
+                                    <td>{{index $.Data.taskStatus $v.Status}}</td>
+                                    <td>
+                                    	<div class="progress progress150">
+                            				<div class="bar">
+                                                <div style="width: {{getProcess $v.Status}}%;" class="value bluebar"></div>
+                                            </div>
+                        				</div>
+                                    </td>
+                                </tr>
+                                {{end}}
+                            </tbody>
+                        </table>
+                        
+                        <br />
+                        
+                    </div><!--two_third dashboard_left -->
+                    
+                    <div class="one_third last dashboard_right">
+                    
+                        <div class="contenttitle2 nomargintop">
+                            <h3>一起战斗的同事</h3>
+                        </div><!--contenttitle-->
+                        
+						<div class="widgetbox">
+                            <div class="widgetcontent userlistwidget nopadding">
+                                <ul>
+                                    {{range $key,$val := .Data.users}}
+                                    <li>
+                                        <div class="avatar"><img alt="" src="/images/thumbs/avatar2.png" /></div>
+                                        <div class="info">
+                                            {{$val.Name}}&nbsp;({{$val.Realname}}) <br />
+                                            {{getGroupName $val.GroupId}} <br />
+                                            {{$val.UpdatedAt}} 
+                                        </div><!--info-->
+                                    </li>
+                                    {{end}}
+                                </ul>
+                            </div><!--widgetcontent-->
+                        </div>
+                    
+            </div><!-- #updates -->
+            
+        </div><!--contentwrapper-->
+        
+        <br clear="all" />
+        
+	</div><!-- centercontent -->
+    
+    
+</div><!--bodywrapper-->
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+    <div class="vernav2 iconmenu">
+    	<ul>
+            {{if ne .Data.userinfo.GroupId 3}}
+            <li{{if eq .Controll "task"}} class="current"{{end}}><a href="#task" class="editor">任务管理</a>
+            	<span class="arrow"></span>
+            	<ul id="task">
+               		<li{{if eq .Path "task/index"}} class="current"{{end}}><a href="/task">任务列表</a></li>
+               		<li{{if eq .Path "task/add"}} class="current"{{end}}><a href="/task/add">创建任务</a></li>
+                </ul>
+            </li>
+            <li{{if eq .Controll "review"}} class="current"{{end}}><a href="/review" class="elements">Review管理</a></li>
+            {{end}}
+            {{if ne .Data.userinfo.GroupId 2}}
+            <li{{if eq .Controll "test"}} class="current"{{end}}><a href="/test" class="elements">测试管理</a></li>
+            {{end}}
+            {{if eq .Data.userinfo.GroupId 1}}
+            <li{{if eq .Controll "release"}} class="current"{{end}}><a href="/release" class="elements">上线管理</a></li>
+            <li{{if eq .Controll "project"}} class="current"{{end}}><a href="#project" class="editor">项目管理</a>
+            	<span class="arrow"></span>
+            	<ul id="project">
+               		<li{{if eq .Path "project/index"}} class="current"{{end}}><a href="/project">项目列表</a></li>
+               		<li{{if eq .Path "project/add"}} class="current"{{end}}><a href="/project/add">创建项目</a></li>
+                </ul>
+            </li>
+            <li{{if eq .Controll "user"}} class="current"{{end}}><a href="#user" class="editor">用户管理</a>
+            	<span class="arrow"></span>
+            	<ul id="user">
+               		<li{{if eq .Path "user/index"}} class="current"{{end}}><a href="/user">用户列表</a></li>
+               		<li{{if eq .Path "user/add"}} class="current"{{end}}><a href="/user/add">创建用户</a></li>
+                </ul>
+            </li>
+            <li{{if eq .Controll "machine"}} class="current"{{end}}><a href="#machine" class="editor">服务器管理</a>
+            	<span class="arrow"></span>
+            	<ul id="machine">
+               		<li{{if eq .Path "machine/index"}} class="current"{{end}}><a href="/machine">服务器列表</a></li>
+               		<li{{if eq .Path "machine/add"}} class="current"{{end}}><a href="/machine/add">增加直连服务器</a></li>
+               		<li{{if eq .Path "machine/addinner"}} class="current"{{end}}><a href="/machine/addInner">增加内网服务器</a></li>
+                </ul>
+            </li>
+
+            <li><a href="/setting" class="elements">系统设置</a></li>
+            {{end}}
+        </ul>
+        <a class="togglemenu"></a>
+        <br /><br />
+    </div><!--leftmenu-->

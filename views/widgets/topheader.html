@@ -1,0 +1,42 @@
+{{if eq .Action "notfound" "servererror" "throw"}}
+    <div class="topheader orangeborderbottom5">
+{{else}}
+    <div class="topheader">
+{{end}}
+        <div class="left">
+            <h1 class="logo">Red<span>Maple</span></h1>
+            <span class="slogan">开发上线管理系统</span>
+            <br clear="all" />
+        </div><!--left-->
+        
+        <div class="right">
+            <div class="userinfo">
+            	<img src="/images/thumbs/avatar.png" alt="" />
+                <span>{{.Data.userinfo.Realname}}</span>
+            </div><!--userinfo-->
+
+            <div class="userinfodrop">
+            	<div class="avatar">
+                	<a href=""><img src="/images/thumbs/avatarbig.png" alt="" /></a>
+                    <div class="changetheme">
+                    	切换主题: <br />
+                    	<a class="default"></a>
+                        <a class="blueline"></a>
+                        <a class="greenline"></a>
+                        <a class="contrast"></a>
+                    </div>
+                </div><!--avatar-->
+                <div class="userdata">
+                	<h4>Juan</h4>
+                    <span class="email">{{.Data.userinfo.Email}}</span>
+                    <ul>
+                    	<li><a href="/user/profile">编辑资料</a></li>
+                        <li><a href="/user/profile">账号设置</a></li>
+                        <li><a href="#">帮助</a></li>
+                        <li><a href="/index/logout">退出</a></li>
+                    </ul>
+                </div><!--userdata-->
+            </div><!--userinfodrop-->
+
+        </div><!--right-->
+    </div><!--topheader-->
