@@ -6,6 +6,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/hsyan2008/go-logger/logger"
 	"github.com/hsyan2008/hfw"
 )
 
@@ -25,9 +26,9 @@ func NewGitTools() *GitTools {
 func (this *GitTools) exec(cmd string, throw bool) (rs []byte, err error) {
 
 	cmd = strings.Replace(cmd, "gitCmd", gitCmd, -1)
-	hfw.Debug(cmd)
+	logger.Debug(cmd)
 	rs, err = exec.Command("/bin/sh", "-c", cmd).CombinedOutput()
-	hfw.Debug(string(rs), err)
+	logger.Debug(string(rs), err)
 	if throw {
 		hfw.CheckErr(err)
 	}
@@ -50,7 +51,7 @@ func (this *GitTools) Clone(git, wwwroot string) {
 }
 
 func (this *GitTools) NewBranch(wwwroot, branch string) {
-	hfw.Debug("NewBranch", wwwroot, branch)
+	logger.Debug("NewBranch", wwwroot, branch)
 
 	branch = this.compBranchName(branch)
 
@@ -59,7 +60,7 @@ func (this *GitTools) NewBranch(wwwroot, branch string) {
 }
 
 func (this *GitTools) DelBranch(wwwroot, branch string) {
-	hfw.Debug("DelBranch", wwwroot, branch)
+	logger.Debug("DelBranch", wwwroot, branch)
 
 	branch = this.compBranchName(branch)
 
@@ -76,7 +77,7 @@ func (this *GitTools) ReBranch(wwwroot string, branches ...string) {
 }
 
 func (this *GitTools) GetCommitId(wwwroot string, branch string) (commitid, msg string, err error) {
-	hfw.Debug("GetCommitId", wwwroot, branch)
+	logger.Debug("GetCommitId", wwwroot, branch)
 
 	branch = this.compBranchName(branch)
 
@@ -91,7 +92,7 @@ func (this *GitTools) GetCommitId(wwwroot string, branch string) (commitid, msg 
 //合并src 代码到 des
 //预发布分支合并到master，不需要精简commit
 func (this *GitTools) Patch(wwwroot, src, des, start, end string) (err error) {
-	hfw.Debug("Patch", wwwroot, src, des, start, end)
+	logger.Debug("Patch", wwwroot, src, des, start, end)
 
 	if start == end {
 		return
@@ -114,7 +115,7 @@ func (this *GitTools) Patch(wwwroot, src, des, start, end string) (err error) {
 
 //开发分支合并到测试分支或开发分支合并到预发布分支，需要精简commit
 func (this *GitTools) Merge(wwwroot, src, des, start, end, msg, author string) (err error) {
-	hfw.Debug("Merge", wwwroot, src, des, start, end)
+	logger.Debug("Merge", wwwroot, src, des, start, end)
 
 	if start == end {
 		return

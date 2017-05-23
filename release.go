@@ -4,14 +4,15 @@ import (
 	"os"
 	"os/user"
 
+	"github.com/hsyan2008/go-logger/logger"
 	"github.com/hsyan2008/hfw"
 	"github.com/hsyan2008/redmaple/controllers"
 )
 
 func main() {
 
-	hfw.Debug("Pid:", os.Getpid(), "Starting ...")
-	defer hfw.Debug("Pid:", os.Getpid(), "Shutdown complete!")
+	logger.Debug("Pid:", os.Getpid(), "Starting ...")
+	defer logger.Debug("Pid:", os.Getpid(), "Shutdown complete!")
 
 	user, _ := user.Current()
 	if user.Uid == "0" {
