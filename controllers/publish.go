@@ -20,6 +20,7 @@ var groupModel = &models.Groups{}
 var machineModel = &models.Machines{}
 var messageModel = &models.Messages{}
 var projectModel = &models.Projectes{}
+var settingModel = &models.Settings{}
 var taskModel = &models.Tasks{}
 var taskReviewModel = &models.TaskReviews{}
 var taskProjectesModel = &models.TaskProjectes{}

@@ -28,6 +28,7 @@ func main() {
 	hfw.RegisterRoute("/review", &controllers.Review{})
 	hfw.RegisterRoute("/test", &controllers.Test{})
 	hfw.RegisterRoute("/release", &controllers.Release{})
+	hfw.RegisterRoute("/setting", &controllers.Setting{})
 
 	hfw.RegisterStatic("/js/", hfw.Config.Template.Static)
 	hfw.RegisterStatic("/css/", hfw.Config.Template.Static)

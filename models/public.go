@@ -14,6 +14,7 @@ var groupModel = &Groups{}
 var machineModel = &Machines{}
 var messageModel = &Messages{}
 var projectModel = &Projectes{}
+var settingModel = &Settings{}
 var taskModel = &Tasks{}
 var taskReviewModel = &TaskReviews{}
 var taskProjectesModel = &TaskProjectes{}
@@ -25,6 +26,7 @@ func init() {
 	gob.Register(machineModel)
 	gob.Register(messageModel)
 	gob.Register(projectModel)
+	gob.Register(settingModel)
 	gob.Register(taskProjectesModel)
 	gob.Register(taskReviewModel)
 	gob.Register(taskModel)
