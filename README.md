@@ -14,7 +14,7 @@ golang语言写的git开发测试上线流程管理系统
 1. 执行上一步生成的二进制文件，一般是redmaple，dev是指config/dev，也可以增加test、prod
             
         ./redmaple -e dev
-1. 浏览器打开http://localhost:8080(如果没有更改的话)，用admin和admin登陆        
+1. 浏览器打开http://localhost:8080 (如果没有更改的话)，用admin和admin登陆        
 
 ## 特性
 * 完善的git工作流[查看](#git工作流)，支持多个任务同时进行
