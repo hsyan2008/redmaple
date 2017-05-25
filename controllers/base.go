@@ -167,7 +167,7 @@ func (this *base) saveMessage(taskId, status int, msg string) {
 var settingInstance, _ = settingModel.SearchOne(models.Cond{})
 
 func (this *base) sendMail(task *models.Tasks, msg string, users ...*models.Users) {
-	if len(users) == 0 {
+	if len(users) == 0 || settingInstance == nil {
 		return
 	}
 	d := gomail.NewDialer(settingInstance.SmtpAddr, settingInstance.SmtpPort, settingInstance.SmtpUser, settingInstance.SmtpPass)
