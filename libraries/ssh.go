@@ -31,19 +31,22 @@ type Ssh struct {
 
 // s 外网服务器
 // r 内网服务器，可以为空
-func NewSsh(s, r SshConfig) *Ssh {
+func NewSsh(s, r SshConfig) (ssh *Ssh, err error) {
 
-	ssh := &Ssh{
+	ssh = &Ssh{
 		s: s,
 		r: r,
 	}
 
-	ssh.Dial()
+	err = ssh.Dial()
+	if err != nil {
+		return nil, err
+	}
 
-	return ssh
+	return ssh, nil
 }
 
-func (this *Ssh) Dial() {
+func (this *Ssh) Dial() (err error) {
 	config := &ssh.ClientConfig{
 		User: this.s.Username,
 		Auth: []ssh.AuthMethod{
@@ -51,16 +54,19 @@ func (this *Ssh) Dial() {
 		},
 		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
-	var err error
 	this.sc, err = ssh.Dial("tcp", this.s.Ip+":"+this.s.Port, config)
-	hfw.CheckErr(err)
+	if err != nil {
+		return
+	}
 
 	this.c = this.sc
 
 	//如果是跳板，继续连接
 	if this.r.Ip != "" && this.r.Port != "" {
 		rc, err := this.sc.Dial("tcp", this.r.Ip+":"+this.r.Port)
-		hfw.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		conn, nc, req, err := ssh.NewClientConn(rc, "", &ssh.ClientConfig{
 			User: this.r.Username,
@@ -69,7 +75,9 @@ func (this *Ssh) Dial() {
 			},
 			HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 		})
-		hfw.CheckErr(err)
+		if err != nil {
+			return err
+		}
 
 		this.rc = ssh.NewClient(conn, nc, req)
 		this.c = this.rc

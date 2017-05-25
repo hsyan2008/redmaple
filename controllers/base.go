@@ -81,7 +81,7 @@ func (this *base) release(env string, wg *sync.WaitGroup, project *models.Projec
 		}
 	}()
 
-	ssh := libraries.NewSsh(libraries.SshConfig{
+	ssh, err := libraries.NewSsh(libraries.SshConfig{
 		Username: machine.User,
 		Auth:     machine.Auth,
 		Ip:       machine.Ip,
@@ -92,6 +92,9 @@ func (this *base) release(env string, wg *sync.WaitGroup, project *models.Projec
 		Ip:       machine.InnerIp,
 		Port:     machine.InnerPort,
 	})
+	if err != nil {
+		return
+	}
 	defer ssh.Close()
 
 	var wwwroot string

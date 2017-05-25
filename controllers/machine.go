@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/hsyan2008/hfw"
+	"github.com/hsyan2008/redmaple/libraries"
 	"github.com/hsyan2008/redmaple/models"
 )
 
@@ -105,6 +106,22 @@ func (this *Machine) Save() {
 		machine.InnerUser = this.Request.PostFormValue("InnerUser")
 		machine.InnerAuth = this.Request.PostFormValue("InnerAuth")
 		machine.IsDeleted = "N"
+
+		//检测连接
+		_, err := libraries.NewSsh(libraries.SshConfig{
+			Username: machine.User,
+			Auth:     machine.Auth,
+			Ip:       machine.Ip,
+			Port:     machine.Port,
+		}, libraries.SshConfig{
+			Username: machine.InnerUser,
+			Auth:     machine.InnerAuth,
+			Ip:       machine.InnerIp,
+			Port:     machine.InnerPort,
+		})
+		if err != nil {
+			this.Throw(99400, "服务器检测失败")
+		}
 
 		hfw.CheckErr(machineModel.Save(machine))
 	} else {
