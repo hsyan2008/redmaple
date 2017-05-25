@@ -14,7 +14,7 @@ Db=8
 [Logger]
 LogGoID = true
 LogFile = "/opt/log/redmaple.log"
-LogLevel = "debug"
+LogLevel = "warn"
 Console = true
 LogType = "roll"
 LogMaxNum = 10
@@ -29,7 +29,7 @@ Protocol = "tcp"
 Address = "127.0.0.1:3306"
 Dbname = "redmaple"
 Params = "?charset=utf8&strict=true&sql_notes=false&timeout=90s&collation=utf8_general_ci&parseTime=True&loc=Local"
-Cache=""
+Cache="memory"
 
 [Cache]
 Type="memcache"
@@ -41,7 +41,7 @@ Expiration = 0
 [Template]
 Static="static/"
 Html="views/"
-Cache=false
+Cache=true
 
 [Route]
 Controller="index"
