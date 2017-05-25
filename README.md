@@ -16,6 +16,10 @@ golang语言写的git开发测试上线流程管理系统
         ./redmaple -e dev
 1. 浏览器打开http://localhost:8080 (如果没有更改的话)，用admin和admin登陆        
 
+## 默认dev、test、prod的区别
+* dev不会缓存mysql查询结果，不会缓存模板文件，其他两个环境都会缓存
+* prod默认不会打印mysql日志，其他两个环境会打印
+
 ## 特性
 * 完善的git工作流[查看](#git工作流)，支持多个任务同时进行
 * 分支上多个commit自动合并为一个，并填充开发内容作为commit信息
