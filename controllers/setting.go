@@ -56,19 +56,9 @@ func (this *Setting) Save() {
 			_ = s.Close()
 		}()
 
-		// user, _ := userModel.GetById(1)
-		// m := gomail.NewMessage()
-		// m.SetHeader("From", setting.SmtpUser)
-		// m.SetAddressHeader("To", user.Email, "test")
-		// m.SetHeader("Subject", "test")
-		// m.SetBody("text/html", "test")
-		// err = gomail.Send(s, m)
-		// if err != nil {
-		// 	this.Throw(99400, "测试邮件发送失败"+err.Error())
-		// }
-
 		hfw.CheckErr(settingModel.Save(setting))
 
+		settingInstance = setting
 	} else {
 		this.Throw(99400, "非法请求")
 	}

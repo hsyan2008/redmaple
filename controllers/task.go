@@ -77,7 +77,7 @@ func (this *Task) Del() {
 			models.Cond{"task_id": id})
 		hfw.CheckErr(err)
 
-		saveMessage(task.Id, this.User.Id, 9, "删除")
+		this.saveMessage(task.Id, 9, "删除")
 	} else {
 		this.Throw(99400, "参数错误")
 	}
@@ -162,7 +162,7 @@ func (this *Task) Save() {
 		taskReview.IsDeleted = "N"
 		hfw.CheckErr(taskReviewModel.Save(taskReview))
 
-		saveMessage(task.Id, this.User.Id, task.Status, "创建")
+		this.saveMessage(task.Id, task.Status, "创建")
 	} else {
 		this.Throw(99400, "非法请求")
 	}
@@ -201,7 +201,14 @@ func (this *Task) ToReview() {
 		err = taskReviewModel.Update(models.Cond{"status": "20"}, models.Cond{"task_id": id})
 		hfw.CheckErr(err)
 
-		saveMessage(task.Id, this.User.Id, 20, "提交Review")
+		this.saveMessage(task.Id, 20, "提交Review")
+
+		users := make([]*models.Users, 0)
+		for _, v := range task.TaskReviews {
+			users = append(users, v.User)
+		}
+		this.sendMail(task, "提交Reveiw了，请尽快进行Review", users...)
+
 	} else {
 		this.Throw(99400, "参数错误")
 	}

@@ -49,7 +49,8 @@ func (this *Test) TestSuccess() {
 		err = taskModel.Update(models.Cond{"status": "60"}, models.Cond{"Id": id})
 		hfw.CheckErr(err)
 
-		saveMessage(id, this.User.Id, 60, "测试通过")
+		this.saveMessage(id, 60, "测试通过")
+		this.sendMail(task, "测试通过了", task.User)
 	} else {
 		this.Throw(99400, "参数错误")
 	}
@@ -69,7 +70,8 @@ func (this *Test) TestFail() {
 		_ = taskProjectesModel.Update(models.Cond{"status": "2",
 			"is_patch": "N"}, models.Cond{"task_id": id})
 
-		var wg = &sync.WaitGroup{}
+		wg := &sync.WaitGroup{}
+		errs := make([]error, 0)
 		//排除本任务，重新部署和本任务相关的分支的test
 		for _, val := range task.TaskProjectes {
 			//本分支没有改动，不需要重新建test
@@ -92,13 +94,20 @@ func (this *Test) TestFail() {
 			for _, v := range val.Project.TestMachines {
 				wg.Add(1)
 				go func() {
-					_ = release("test", wg, val.Project, v)
+					err := this.release("test", wg, val.Project, v)
+					if err != nil {
+						errs = append(errs, err)
+					}
 				}()
 			}
 		}
 		wg.Wait()
+		if len(errs) != 0 {
+			this.Throw(99400, "代码回滚失败")
+		}
 
-		saveMessage(id, this.User.Id, 2, this.Request.PostFormValue("msg"))
+		this.saveMessage(id, 2, this.Request.PostFormValue("msg"))
+		this.sendMail(task, "测试未通过", task.User)
 	} else {
 		this.Throw(99400, "参数错误")
 	}
@@ -127,7 +136,8 @@ func (this *Test) StartTest() {
 			}
 		}()
 
-		var wg = &sync.WaitGroup{}
+		wg := &sync.WaitGroup{}
+		errs := make([]error, 0)
 		for _, val := range task.TaskProjectes {
 			//把代码合并到test
 			if val.StartCommit != val.EndCommit {
@@ -140,13 +150,19 @@ func (this *Test) StartTest() {
 				for _, v := range val.Project.TestMachines {
 					wg.Add(1)
 					go func() {
-						_ = release("test", wg, val.Project, v)
+						err := this.release("test", wg, val.Project, v)
+						if err != nil {
+							errs = append(errs, err)
+						}
 					}()
 				}
 			}
 		}
 
 		wg.Wait()
+		if len(errs) != 0 {
+			this.Throw(99400, "代码部署失败")
+		}
 
 		err = taskModel.Update(models.Cond{"status": "43"}, models.Cond{"Id": id})
 		hfw.CheckErr(err)
@@ -154,7 +170,8 @@ func (this *Test) StartTest() {
 		_ = taskReviewModel.Update(models.Cond{"status": "43"}, models.Cond{"task_id": id})
 		_ = taskProjectesModel.Update(models.Cond{"status": "43"}, models.Cond{"task_id": id})
 
-		saveMessage(id, this.User.Id, 43, "开始测试")
+		this.saveMessage(id, 43, "开始测试")
+		this.sendMail(task, "已经开始测试", task.User)
 	} else {
 		this.Throw(99400, "参数错误")
 	}

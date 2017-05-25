@@ -67,7 +67,7 @@ func (this *Review) StartReview() {
 		err = taskProjectesModel.Update(models.Cond{"status": "21"}, models.Cond{"task_id": id})
 		hfw.CheckErr(err)
 
-		saveMessage(task.Id, this.User.Id, 21, "开始Review")
+		this.saveMessage(task.Id, 21, "开始Review")
 	} else {
 		this.Throw(99400, "参数错误")
 	}
@@ -97,7 +97,7 @@ func (this *Review) ReviewSuccess() {
 		err = taskProjectesModel.Update(models.Cond{"status": "40"}, models.Cond{"task_id": id})
 		hfw.CheckErr(err)
 
-		saveMessage(task.Id, this.User.Id, 40, "Review通过")
+		this.saveMessage(task.Id, 40, "Review通过")
 	} else {
 		this.Throw(99400, "参数错误")
 	}
@@ -127,7 +127,7 @@ func (this *Review) ReviewFail() {
 		err = taskProjectesModel.Update(models.Cond{"status": "1"}, models.Cond{"task_id": id})
 		hfw.CheckErr(err)
 
-		saveMessage(task.Id, this.User.Id, 1, this.Request.PostFormValue("msg"))
+		this.saveMessage(task.Id, 1, this.Request.PostFormValue("msg"))
 	} else {
 		this.Throw(99400, "参数错误")
 	}
