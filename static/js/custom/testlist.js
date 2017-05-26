@@ -23,7 +23,7 @@ jQuery(document).ready(function(){
                     data: "id="+me.attr("value"),
                     success: function(msg){
                         if (msg.err_no > 0)  {
-                            jAlert(msg.err_msg, '部署失败');
+                            jAlert(msg.err_msg+'，可能代码冲突，返回开发', '部署失败');
                         } else {
                             jAlert('部署成功，请尽快测试', '部署成功', function(){
                                 window.location.reload()

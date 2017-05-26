@@ -7,7 +7,7 @@ golang语言写的git开发测试上线流程管理系统
 ## 安装方法
 1. 导入sql文件
 1. 安装redis
-1. 修改config/dev/config.toml的配置
+1. 修改config/环境/config.toml的配置
 1. 在项目目录下执行
 
         go build

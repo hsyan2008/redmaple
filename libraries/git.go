@@ -129,7 +129,7 @@ func (this *GitTools) Merge(wwwroot, src, des, start, end, msg, author string) (
 		_, _ = this.exec(cmd, false)
 	}()
 	defer func() {
-		cmd := fmt.Sprintf("cd %s && gitCmd branch -q -D %s_tmp", des)
+		cmd := fmt.Sprintf("cd %s && gitCmd checkout -q %s && gitCmd branch -q -D %s_tmp", wwwroot, des, des)
 		_, _ = this.exec(cmd, false)
 	}()
 

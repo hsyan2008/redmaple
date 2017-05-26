@@ -163,7 +163,7 @@ func (this *Release) ReleaseFail() {
 			this.Throw(99400, "代码回滚失败")
 		}
 
-		this.saveMessage(id, 3, this.Request.PostFormValue("msg"))
+		this.saveMessage(id, 3, "上线验证失败，原因："+this.Request.PostFormValue("msg"))
 		this.sendMail(task, "上线验证失败", task.User)
 	} else {
 		this.Throw(99400, "参数错误")

@@ -106,7 +106,7 @@ func (this *Test) TestFail() {
 			this.Throw(99400, "代码回滚失败")
 		}
 
-		this.saveMessage(id, 2, this.Request.PostFormValue("msg"))
+		this.saveMessage(id, 2, "测试未通过，原因："+this.Request.PostFormValue("msg"))
 		this.sendMail(task, "测试未通过", task.User)
 	} else {
 		this.Throw(99400, "参数错误")
@@ -129,10 +129,12 @@ func (this *Test) StartTest() {
 
 		defer func() {
 			if err := recover(); err != nil {
-				_ = taskModel.Update(models.Cond{"status": "42"}, models.Cond{"Id": id})
-				_ = taskReviewModel.Update(models.Cond{"status": "42"}, models.Cond{"task_id": id})
-				_ = taskProjectesModel.Update(models.Cond{"status": "42"}, models.Cond{"task_id": id})
-				panic(err)
+				_ = taskModel.Update(models.Cond{"status": "4"}, models.Cond{"Id": id})
+				_ = taskReviewModel.Update(models.Cond{"status": "4"}, models.Cond{"task_id": id})
+				_ = taskProjectesModel.Update(models.Cond{"status": "4"}, models.Cond{"task_id": id})
+				this.saveMessage(id, 4, "部署失败，可能是代码冲突")
+				this.sendMail(task, "部署失败，可能是代码冲突", task.User)
+				this.Throw(99400, "代码部署失败")
 			}
 		}()
 
