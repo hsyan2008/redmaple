@@ -18,6 +18,11 @@ CREATE TABLE `groups` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户组';
 
+INSERT INTO `groups` (`id`, `name`, `is_deleted`, `updated_at`, `created_at`) VALUES
+(1, '管理员', 'N', '2017-04-28 02:41:02', '2017-04-28 02:41:02'),
+(2, '开发者', 'N', '2017-04-28 02:41:02', '2017-04-28 02:41:02'),
+(3, '测试员', 'N', '2017-04-28 02:41:12', '2017-04-28 02:41:12');
+
 DROP TABLE IF EXISTS `machines`;
 CREATE TABLE `machines` (
   `id` int(10) UNSIGNED NOT NULL,
