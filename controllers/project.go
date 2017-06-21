@@ -168,7 +168,7 @@ func (this *Project) Save() {
 		defer GitTools.Unlock()
 
 		//如果更改git地址
-		if Git != project.Git {
+		if project.Git != "" && Git != project.Git {
 			//初始化
 			hfw.CheckErr(os.RemoveAll(Wwwroot))
 			GitTools.Clone(Git, Wwwroot)

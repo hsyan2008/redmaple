@@ -34,6 +34,7 @@ func main() {
 	hfw.RegisterStatic("/css/", hfw.Config.Template.Static)
 	hfw.RegisterStatic("/images/", hfw.Config.Template.Static)
 	hfw.RegisterStatic("/fonts/", hfw.Config.Template.Static)
+
 	hfw.RegisterFile("/favicon.ico", hfw.Config.Template.Static+"/images/")
 
 	hfw.Run()
