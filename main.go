@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-	"os/user"
 
 	"github.com/hsyan2008/go-logger/logger"
 	"github.com/hsyan2008/hfw"
@@ -13,11 +12,6 @@ func main() {
 
 	logger.Debug("Pid:", os.Getpid(), "Starting ...")
 	defer logger.Debug("Pid:", os.Getpid(), "Shutdown complete!")
-
-	user, _ := user.Current()
-	if user.Uid == "0" {
-		panic("不能以root用户运行")
-	}
 
 	//两端/可以都不写
 	hfw.RegisterRoute("/", &controllers.Index{})
