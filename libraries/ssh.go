@@ -9,8 +9,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/hsyan2008/hfw"
-
 	"golang.org/x/crypto/ssh"
 )
 
@@ -111,7 +109,9 @@ func (this *Ssh) getAuth(auth string) ssh.AuthMethod {
 func (this *Ssh) Exec(cmd string) ([]byte, error) {
 
 	sess, err := this.c.NewSession()
-	hfw.CheckErr(err)
+	if err != nil {
+		return nil, err
+	}
 	defer func() {
 		_ = sess.Close()
 	}()
@@ -244,7 +244,6 @@ func (this *Ssh) scpFile(src, des string, fm os.FileMode, isDir bool) (err error
 		cmd = fmt.Sprintf("/usr/bin/scp -qrt %s", des)
 	}
 	if err := sess.Run(cmd); err != nil {
-		// hfw.Warn(err)
 		if err.Error() != "Process exited with status 1" {
 			return err
 		}

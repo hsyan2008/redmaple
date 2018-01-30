@@ -23,8 +23,8 @@ LogUnit = "GB"
 
 [Db]
 Driver = "mysql"
-Username = "root"
-Password = "jackking"
+Username = "developer"
+Password = "developer"
 Protocol = "tcp"
 Address = "127.0.0.1:3306"
 Dbname = "redmaple"
