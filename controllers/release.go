@@ -53,12 +53,12 @@ func (this *Release) ReleaseSuccess() {
 		for _, val := range task.TaskProjectes {
 			//合并到master
 			if val.IsFinish == "N" && val.EndCommit != val.StartCommit {
-				err = GitTools.Merge(val.Project.Wwwroot, task.Code, "master", val.StartCommit, val.EndCommit, fmt.Sprintf("taskCode:%s\n%s", task.Code, task.Comment), fmt.Sprintf("%s <%s>", task.User.Realname, task.User.Email))
+				err = GitTools.Merge(val.Project.Wwwroot, task.Branch, "master", val.StartCommit, val.EndCommit, fmt.Sprintf("taskCode:%s\n%s", task.Branch, task.Comment), fmt.Sprintf("%s <%s>", task.User.Realname, task.User.Email))
 				hfw.CheckErr(err)
 			}
 
 			err = taskProjectesModel.Update(models.Cond{"status": "81", "is_finish": "Y"}, models.Cond{"id": val.Id})
-			GitTools.DelBranch(val.Project.Wwwroot, task.Code)
+			GitTools.DelBranch(val.Project.Wwwroot, task.Branch)
 
 			//发布到dev
 			for _, v := range val.Project.DevMachines {
@@ -120,7 +120,7 @@ func (this *Release) ReleaseFail() {
 			for _, v := range taskProjectes {
 				tmpTask, _ := taskModel.GetById(v.TaskId)
 				//没有更改代码的，不会重新合并，免得报错
-				err = GitTools.Merge(v.Project.Wwwroot, tmpTask.Code, "pre_release", v.StartCommit, v.EndCommit, fmt.Sprintf("taskCode:%s\n%s", tmpTask.Code, tmpTask.Comment), fmt.Sprintf("%s <%s>", tmpTask.User.Realname, tmpTask.User.Email))
+				err = GitTools.Merge(v.Project.Wwwroot, tmpTask.Branch, "pre_release", v.StartCommit, v.EndCommit, fmt.Sprintf("taskCode:%s\n%s", tmpTask.Branch, tmpTask.Comment), fmt.Sprintf("%s <%s>", tmpTask.User.Realname, tmpTask.User.Email))
 				hfw.CheckErr(err)
 			}
 
@@ -144,7 +144,7 @@ func (this *Release) ReleaseFail() {
 			for _, v := range taskProjectes {
 				tmpTask, _ := taskModel.GetById(v.TaskId)
 				//没有更改代码的，不会重新合并，免得报错
-				err = GitTools.Merge(v.Project.Wwwroot, tmpTask.Code, "test", v.StartCommit, v.EndCommit, fmt.Sprintf("taskCode:%s\n%s", tmpTask.Code, tmpTask.Comment), fmt.Sprintf("%s <%s>", tmpTask.User.Realname, tmpTask.User.Email))
+				err = GitTools.Merge(v.Project.Wwwroot, tmpTask.Branch, "test", v.StartCommit, v.EndCommit, fmt.Sprintf("taskCode:%s\n%s", tmpTask.Branch, tmpTask.Comment), fmt.Sprintf("%s <%s>", tmpTask.User.Realname, tmpTask.User.Email))
 				hfw.CheckErr(err)
 			}
 			for _, v := range val.Project.TestMachines {
@@ -198,7 +198,7 @@ func (this *Release) ToRelease() {
 			//把代码合并到test
 			if val.StartCommit != val.EndCommit {
 				if val.IsMerge == "N" {
-					err = GitTools.Merge(val.Project.Wwwroot, task.Code, "pre_release", val.StartCommit, val.EndCommit, fmt.Sprintf("taskCode:%s\n%s", task.Code, task.Comment), fmt.Sprintf("%s <%s>", task.User.Realname, task.User.Email))
+					err = GitTools.Merge(val.Project.Wwwroot, task.Branch, "pre_release", val.StartCommit, val.EndCommit, fmt.Sprintf("taskCode:%s\n%s", task.Branch, task.Comment), fmt.Sprintf("%s <%s>", task.User.Realname, task.User.Email))
 					hfw.CheckErr(err)
 					err = taskProjectesModel.Update(models.Cond{"is_merge": "Y"}, models.Cond{"id": val.Id})
 				}

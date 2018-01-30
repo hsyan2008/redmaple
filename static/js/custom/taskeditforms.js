@@ -48,6 +48,7 @@ jQuery(document).ready(function(){
 	///// FORM VALIDATION /////
 	jQuery("#form1").validate({
 		rules: {
+			Code: "required",
 			Name: "required",
 			Comment: "required",
 			ReviewUserId: "required",
@@ -56,7 +57,7 @@ jQuery(document).ready(function(){
             }
 		},
 		messages: {
-			Name: "请输入本任务名称",
+			Code: "请输入本任务标识",
 			Comment: "请输入开发内容",
 			ReviewUserId: "请选择review人员",
 			projectIds: "请选择开发分支"

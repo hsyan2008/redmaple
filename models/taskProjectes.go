@@ -57,6 +57,12 @@ func (this *TaskProjectes) SearchOne(cond Cond) (t *TaskProjectes, err error) {
 
 func (this *TaskProjectes) Search(cond Cond) (t []*TaskProjectes, err error) {
 
+	if user_id, ok := cond["user_id"]; ok {
+		if user_id == 1 {
+			delete(cond, "user_id")
+		}
+	}
+
 	err = dao.Search(&t, cond)
 
 	for k, v := range t {

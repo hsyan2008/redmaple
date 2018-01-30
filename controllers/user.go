@@ -50,6 +50,16 @@ func (this *User) Del() {
 	}
 }
 
+func (this *User) Restore() {
+	id, _ := strconv.Atoi(this.Request.PostFormValue("id"))
+	if id > 0 {
+		err := userModel.Update(models.Cond{"is_deleted": "N"}, models.Cond{"Id": id})
+		hfw.CheckErr(err)
+	} else {
+		this.Throw(99400, "参数错误")
+	}
+}
+
 func (this *User) Add() {
 	this.TemplateFile = "user/edit.html"
 	this.Data["title"] = "添加用户"
@@ -101,12 +111,12 @@ func (this *User) Save() {
 
 			user.GroupId = groupId
 
+			user.IsDeleted = "N"
 		}
 		if password != "" {
 			user.Salt = hfw.Md5(uuid.New())
 			user.Password = hfw.Md5(password + user.Salt)
 		}
-		user.IsDeleted = "N"
 		user.Realname = this.Request.PostFormValue("realname")
 		user.Email = this.Request.PostFormValue("email")
 

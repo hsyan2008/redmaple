@@ -23,8 +23,7 @@ jQuery(document).ready(function(){
                 required:true,
                 range:[5,65535]
             },
-			SmtpUser: "required",
-			SmtpPass: "required"
+			SmtpUser: "required"
 		},
 		messages: {
 			SmtpAddr: "请输入smtp服务器地址",
@@ -32,8 +31,7 @@ jQuery(document).ready(function(){
                 required:"请输入smtp端口",
                 range:"端口必须在5-65535之间"
             },
-			SmtpUser: "请输入smtp帐号",
-			SmtpPass: "请输入smtp密码"
+			SmtpUser: "请输入smtp帐号"
 		},
         submitHandler:function(form){
             $.ajax({

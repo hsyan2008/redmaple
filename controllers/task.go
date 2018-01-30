@@ -67,7 +67,7 @@ func (this *Task) Del() {
 		defer GitTools.Unlock()
 		for _, val := range tmpTaskProjectes {
 			project, _ := projectModel.GetById(val.ProjectId)
-			GitTools.DelBranch(project.Wwwroot, task.Code)
+			GitTools.DelBranch(project.Wwwroot, task.Branch)
 		}
 		err = taskProjectesModel.Update(models.Cond{"is_deleted": "Y"},
 			models.Cond{"task_id": id})
@@ -106,16 +106,19 @@ func (this *Task) Save() {
 	if this.Request.Method == "POST" {
 		task := &models.Tasks{}
 
+		Code := this.Request.PostFormValue("Code")
 		Name := this.Request.PostFormValue("Name")
 		ReviewUserId, _ := strconv.Atoi(this.Request.PostFormValue("ReviewUserId"))
 		projectIds := this.Request.Form["projectIds"]
 		Comment := this.Request.PostFormValue("Comment")
 
-		if Name == "" || ReviewUserId <= 0 || len(projectIds) == 0 || Comment == "" {
+		if Code == "" || Name == "" || ReviewUserId <= 0 || len(projectIds) == 0 || Comment == "" {
 			this.Throw(99400, "请完善信息")
 		}
 
-		task.Code = fmt.Sprintf("%06d%s", this.User.Id, time.Now().Format("20060102150405"))
+		// task.Code = fmt.Sprintf("%06d%s", this.User.Id, time.Now().Format("20060102150405"))
+		task.Code = Code
+		task.Branch = fmt.Sprintf("%s_%d", task.Code, time.Now().Unix())
 		task.Name = Name
 		task.UserId = this.User.Id
 		task.Comment = Comment
@@ -142,8 +145,8 @@ func (this *Task) Save() {
 		GitTools.Lock()
 		defer GitTools.Unlock()
 		for _, v := range Projectes {
-			GitTools.NewBranch(v.Wwwroot, task.Code)
-			taskProjectes.StartCommit, _, _ = GitTools.GetCommitId(v.Wwwroot, task.Code)
+			GitTools.NewBranch(v.Wwwroot, task.Branch)
+			taskProjectes.StartCommit, _, _ = GitTools.GetCommitId(v.Wwwroot, task.Branch)
 			taskProjectes.Id = 0
 			taskProjectes.IsPatch = "N"
 			taskProjectes.IsMerge = "N"
@@ -178,7 +181,7 @@ func (this *Task) ToReview() {
 		GitTools.Lock()
 		defer GitTools.Unlock()
 		for _, v := range taskProjectes {
-			endCommit, _, _ := GitTools.GetCommitId(v.Project.Wwwroot, task.Code)
+			endCommit, _, _ := GitTools.GetCommitId(v.Project.Wwwroot, task.Branch)
 			if endCommit != v.StartCommit {
 				isChange = true
 			}

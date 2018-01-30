@@ -71,6 +71,9 @@
                                 {{if eq $v.IsDeleted "N"}}
                                 <a href="/user/edit?id={{$v.Id}}" class="edit">编辑</a> &nbsp; 
                                 <a href="#" value="{{$v.Id}}" class="delete">禁用</a>
+                                {{else}}
+                                <a href="/user/edit?id={{$v.Id}}" class="edit">编辑</a> &nbsp; 
+                                <a href="#" value="{{$v.Id}}" class="restore">启用</a>
                                 {{end}}
                             </td>
                         </tr>

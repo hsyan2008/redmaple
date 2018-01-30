@@ -6,7 +6,8 @@ import (
 
 type Tasks struct {
 	Id            int              `xorm:"not null pk autoincr INT(10)"`
-	Code          string           `xorm:"not null default '' unique CHAR(20)"`
+	Code          string           `xorm:"not null default '' CHAR(20)"`
+	Branch        string           `xorm:"not null default '' unique VARCHAR(128)"`
 	Name          string           `xorm:"not null default '' VARCHAR(32)"`
 	UserId        int              `xorm:"not null default 0 index INT(10)"`
 	ReviewUserId  int              `xorm:"not null default 0 INT(10)"`
@@ -59,6 +60,12 @@ func (this *Tasks) SearchOne(cond Cond) (t *Tasks, err error) {
 }
 
 func (this *Tasks) Search(cond Cond) (t []*Tasks, err error) {
+
+	if user_id, ok := cond["user_id"]; ok {
+		if user_id == 1 {
+			delete(cond, "user_id")
+		}
+	}
 
 	err = dao.Search(&t, cond)
 

@@ -88,7 +88,7 @@ func (this *Test) TestFail() {
 			for _, v := range taskProjectes {
 				tmpTask, _ := taskModel.GetById(v.TaskId)
 				//没有更改代码的，不会重新合并，免得报错
-				err = GitTools.Merge(v.Project.Wwwroot, tmpTask.Code, "test", v.StartCommit, v.EndCommit, fmt.Sprintf("taskCode:%s\n%s", tmpTask.Code, tmpTask.Comment), fmt.Sprintf("%s <%s>", tmpTask.User.Realname, tmpTask.User.Email))
+				err = GitTools.Merge(v.Project.Wwwroot, tmpTask.Branch, "test", v.StartCommit, v.EndCommit, fmt.Sprintf("taskCode:%s\n%s", tmpTask.Branch, tmpTask.Comment), fmt.Sprintf("%s <%s>", tmpTask.User.Realname, tmpTask.User.Email))
 				hfw.CheckErr(err)
 			}
 			for _, v := range val.Project.TestMachines {
@@ -144,7 +144,7 @@ func (this *Test) StartTest() {
 			//把代码合并到test
 			if val.StartCommit != val.EndCommit {
 				if val.IsPatch == "N" {
-					err = GitTools.Merge(val.Project.Wwwroot, task.Code, "test", val.StartCommit, val.EndCommit, fmt.Sprintf("taskCode:%s\n%s", task.Code, task.Comment), fmt.Sprintf("%s <%s>", task.User.Realname, task.User.Email))
+					err = GitTools.Merge(val.Project.Wwwroot, task.Branch, "test", val.StartCommit, val.EndCommit, fmt.Sprintf("taskCode:%s\n%s", task.Branch, task.Comment), fmt.Sprintf("%s <%s>", task.User.Realname, task.User.Email))
 					hfw.CheckErr(err)
 					err = taskProjectesModel.Update(models.Cond{"is_patch": "Y"}, models.Cond{"id": val.Id})
 				}

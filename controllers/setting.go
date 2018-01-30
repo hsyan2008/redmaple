@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"strconv"
+	"strings"
 
 	gomail "gopkg.in/gomail.v2"
 
@@ -35,7 +36,7 @@ func (this *Setting) Save() {
 			}
 		}
 
-		setting.SmtpAddr = this.Request.PostFormValue("SmtpAddr")
+		setting.SmtpAddr = strings.TrimSpace(this.Request.PostFormValue("SmtpAddr"))
 		setting.SmtpPort, _ = strconv.Atoi(this.Request.PostFormValue("SmtpPort"))
 		setting.SmtpSsl = this.Request.PostFormValue("SmtpSsl")
 		if setting.SmtpSsl != "Y" {
@@ -43,7 +44,10 @@ func (this *Setting) Save() {
 		}
 		setting.SmtpName = this.Request.PostFormValue("SmtpName")
 		setting.SmtpUser = this.Request.PostFormValue("SmtpUser")
-		setting.SmtpPass = this.Request.PostFormValue("SmtpPass")
+		SmtpPass := this.Request.PostFormValue("SmtpPass")
+		if SmtpPass != "" {
+			setting.SmtpPass = SmtpPass
+		}
 
 		setting.IsDeleted = "N"
 

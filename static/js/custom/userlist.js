@@ -85,8 +85,35 @@ jQuery(document).ready(function(){
                             jAlert(msg.err_msg, '禁用失败');
                         } else {
                             jAlert('禁用成功', '禁用成功', function(){
-                                me.parent().prev().text("否")
-                                me.parent().text("")
+                                // me.parent().prev().text("否")
+                                // me.parent().text("")
+                                window.location.reload()
+                            });
+                        }
+                    }
+                });
+            }
+        })
+		return false;
+	});
+
+	jQuery('.stdtable a.restore').click(function(){
+        var me = $(this)
+        jConfirm("确定启用？","启用用户", function(c){
+            if(c) {
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "/user/restore",
+                    data: "id="+me.attr("value"),
+                    success: function(msg){
+                        if (msg.err_no > 0)  {
+                            jAlert(msg.err_msg, '启用失败');
+                        } else {
+                            jAlert('启用成功', '启用成功', function(){
+                                // me.parent().prev().text("否")
+                                // me.parent().text("")
+                                window.location.reload()
                             });
                         }
                     }

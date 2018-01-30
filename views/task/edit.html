@@ -32,7 +32,12 @@
 
                     	<p>
                         	<label>任务名</label>
-                            <span class="field"><input type="text" name="Name" id="Name" class="longinput" value="{{.Data.task.Name}}" placeholder="一个识别度高的任务名，方便其他同事了解" /></span>
+                            <span class="field"><input type="text" name="Name" id="Name" class="longinput" value="{{.Data.task.Name}}" placeholder="一个识别度高的任务名，方便区分" /></span>
+                        </p>
+
+                    	<p>
+                        	<label>唯一标识</label>
+                            <span class="field"><input type="text" name="Code" id="Code" class="longinput" value="{{.Data.task.Code}}" placeholder="一个识别度高的标识，用于创建git分支，必须是数字或英文" /></span>
                         </p>
 
                         <p>

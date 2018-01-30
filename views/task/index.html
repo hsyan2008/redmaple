@@ -37,7 +37,7 @@
                     <thead>
                         <tr>
                             <th class="head0">ID</th>
-                            <th class="head1">分支</th>
+                            <th class="head1">任务标识</th>
                             <th class="head0">任务名</th>
                             <th class="head1">Review负责人</th>
                             <th class="head0">当前Review人员</th>
@@ -71,7 +71,7 @@
                         {{range $k,$v := .Data.tasks}}
                         <tr>
                             <td>{{$v.Id}}</td>
-                            <td><a href="/task/detail?id={{$v.Id}}">branch_{{$v.Code}}</a></td>
+                            <td><a href="/task/detail?id={{$v.Id}}" title="branch_{{$v.Branch}}">{{$v.Code}}</a></td>
                             <td>{{$v.Name}}</td>
                             <td>
                                 {{range $key, $val := $v.TaskReviews}}
@@ -90,7 +90,7 @@
                             </td>
                             <td>
                                 {{range $key, $val := $v.TaskProjectes}}
-                                {{$val.Project.Name}}&nbsp;{{$val.Project.Git}}&nbsp;S:{{$val.StartCommit}}&nbsp;E:{{$val.EndCommit}}<br />
+                                {{$val.Project.Name}}<br />
                                 {{end}}
                             </td>
                             <td class="center">{{$v.Comment}}</td>
